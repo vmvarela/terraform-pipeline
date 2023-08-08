@@ -7,15 +7,19 @@ terraform {
   required_providers {
     github = {
       source  = "integrations/github"
-      version = "5.28.1"
+      version = "5.32.0"
     }
     sonarqube = {
       source  = "jdamata/sonarqube"
-      version = "0.16.2"
+      version = "0.16.4"
     }
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "16.1.0"
+      version = "16.2.0"
+      configuration_aliases = [
+        gitlab.cloud,
+        gitlab.onprem
+      ]
     }
   }
 }
