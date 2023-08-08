@@ -32,7 +32,6 @@ jobs:
       
             - name: Terraform Validate
               id: validate
-              env:
               run: terraform validate -no-color
       
             - name: Setup TFLint
@@ -46,7 +45,6 @@ jobs:
       
             - name: Terraform Plan
               id: plan
-              env:
               run: terraform plan -var-file=Team-${{ inputs.workspace }}.tfvars -no-color -input=false -lock=false -out=Team-${{ inputs.workspace }}.tfplan
 
             - uses: actions/upload-artifact@v3
