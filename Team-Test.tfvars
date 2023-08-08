@@ -4,8 +4,7 @@ prefix      = "devops"
 topics      = ["devops"]
 
 codeowners = [
-  "ebarberan-clb_prisa", # Enrique Barberan
-  "vmvarela-clb_prisa"   # Victor M. Varela
+  "vmvarela" # Victor M. Varela
 ]
 
 repositories = {
