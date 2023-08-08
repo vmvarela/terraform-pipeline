@@ -1,7 +1,6 @@
 
 module "github" {
-  # source = "https://github.com/vmvarela/terraform-github.git"
-  source = "./terraform-github"
+  source = "github.com/vmvarela/terraform-github?ref=95a2463fe225fe6331c48835c040ba911eea5d4e"
 
   github_owner       = var.github_owner
   github_mirror_auth = var.github_mirror_auth
