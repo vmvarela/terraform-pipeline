@@ -1,0 +1,60 @@
+name: CI/CD
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+  
+jobs:
+    by-workspace:
+        name: By Workspace
+        runs-on: ubuntu-latest
+        outputs:
+            matrix: ${{ steps.changed.outputs.matrix }}
+        steps:
+        - name: Generate matrix
+          id: changed
+          uses: hellofresh/action-changed-files@v3
+          with:
+            pattern: Team-(?P<path>(\w+))\.tfvars
+        - run: echo ${{ steps.changed.outputs.matrix }}
+
+    build:
+        name: Build
+        needs: [by-workspace]
+        if: ${{ fromJson(needs.by-workspace.outputs.matrix).include[0] }}
+        strategy:
+            fail-fast: false
+            matrix: ${{ fromJson(needs.by-workspace.outputs.matrix) }}
+        uses: ./.github/workflows/build.yml
+        with:
+            workspace: ${{ matrix.path }}
+            trigger: ${{ matrix.reason }}
+        secrets: inherit
+
+    test:
+        name: Test
+        needs: [by-workspace, build]
+        strategy:
+            fail-fast: false
+            matrix: ${{ fromJson(needs.by-workspace.outputs.matrix) }}
+        uses: ./.github/workflows/test.yml
+        with:
+            workspace: ${{ matrix.path }}
+            trigger: ${{ matrix.reason }}
+        secrets: inherit
+
+    deploy:
+            name: Deploy
+            needs: [by-workspace, build, test]
+            if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+            strategy:
+                fail-fast: false
+                matrix: ${{ fromJson(needs.by-workspace.outputs.matrix) }}
+            uses: ./.github/workflows/deploy.yml
+            with:
+                workspace: ${{ matrix.path }}
+                trigger: ${{ matrix.reason }}
+            secrets: inherit

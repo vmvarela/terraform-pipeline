@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      workspace:
+        required: true
+        type: string
+      trigger:
+        required: true
+        type: string
+  
+jobs:
+    deploy:
+        name: Terraform Apply
+        # environment: production
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            # Terraform integration tests and plan scanning
+
+            - uses: hashicorp/setup-terraform@v2
+              with:
+                cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+                terraform_version: 1.5.0
+
+            - run: echo "terraform apply ... ${{ inputs.workspace }}"
+
