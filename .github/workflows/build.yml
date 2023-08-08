@@ -16,7 +16,7 @@ jobs:
         if: ${{ inputs.trigger }} != "deleted"
         runs-on: ubuntu-latest
         env:
-          TF_WORKSPACE: Github-Prisamedia-Team-${{ inputs.workspace }}
+          TF_WORKSPACE: Team-${{ inputs.workspace }}
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -33,10 +33,6 @@ jobs:
             - name: Terraform Validate
               id: validate
               env:
-                GITHUB_OWNER: PrisaMedia
-                GITHUB_APP_ID: ${{ vars.GH_APP_ID }}
-                GITHUB_APP_INSTALLATION_ID: ${{ vars.GH_APP_INSTALLATION_ID }}
-                GITHUB_APP_PEM_FILE: ${{ secrets.GH_APP_PEM_FILE }}
               run: terraform validate -no-color
       
             - name: Setup TFLint
@@ -51,17 +47,6 @@ jobs:
             - name: Terraform Plan
               id: plan
               env:
-                TF_VAR_github_mirror_auth: ${{ secrets.GH_MIRROR_AUTH }}
-                TF_VAR_gitlab_cloud_token: ${{ secrets.GL_TOKEN_COM }}
-                TF_VAR_gitlab_onprem_token: ${{ secrets.GL_TOKEN }}
-                TF_VAR_gitlab_onprem_url: "https://gitlab.prisamedia.com"
-                SONARQUBE_HOST: ${{ vars.SONAR_HOST_URL }}
-                SONARQUBE_TOKEN: ${{ secrets.SN_TOKEN }}
-                TFE_TOKEN: ${{ secrets.TF_TOKEN }}
-                GITHUB_OWNER: PrisaMedia
-                GITHUB_APP_ID: ${{ vars.GH_APP_ID }}
-                GITHUB_APP_INSTALLATION_ID: ${{ vars.GH_APP_INSTALLATION_ID }}
-                GITHUB_APP_PEM_FILE: ${{ secrets.GH_APP_PEM_FILE }}
               run: terraform plan -var-file=Team-${{ inputs.workspace }}.tfvars -no-color -input=false -lock=false -out=Team-${{ inputs.workspace }}.tfplan
 
             - uses: actions/upload-artifact@v3
