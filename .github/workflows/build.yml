@@ -9,7 +9,10 @@ on:
         trigger:
           required: true
           type: string
-  
+
+env:
+  TF_CLOUD_ORGANIZATION: ${{ vars.TF_CLOUD_ORGANIZATION }}
+
 jobs:
     build:
         name: Terraform Validate, Lint & Plan
