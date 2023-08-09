@@ -12,6 +12,7 @@ on:
 
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.TF_CLOUD_ORGANIZATION }}
+  GITHUB_OWNER: ${{ vars.GH_OWNER }}
 
 jobs:
     build:
