@@ -19,7 +19,7 @@ jobs:
           TF_WORKSPACE: Team-${{ inputs.workspace }}
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - uses: hashicorp/setup-terraform@v2
               with:
