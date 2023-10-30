@@ -21,7 +21,7 @@ jobs:
 
             # Terraform integration tests and plan scanning
 
-            - uses: hashicorp/setup-terraform@v2
+            - uses: hashicorp/setup-terraform@v3
               with:
                 cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
                 terraform_version: 1.5.0
